@@ -1,12 +1,10 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
-import { PapperBlock } from 'dan-components';
-import CompossedLineBarArea from './CompossedLineBarArea';
-import StrippedTable from '../Table/StrippedTable';
+import React from "react";
+import { Helmet } from "react-helmet";
+import brand from "dan-api/dummy/brand";
+import PoultryDashboard from "./PoultryDashboard";
 
 function BasicTable() {
-  const title = brand.name + ' - Dashboard';
+  const title = brand.name + " - Dashboard";
   const description = brand.desc;
   return (
     <div>
@@ -18,16 +16,27 @@ function BasicTable() {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <PapperBlock title="Statistic Chart" icon="ion-ios-stats-outline" desc="" overflowX>
+
+      <PoultryDashboard />
+      {/* <PapperBlock
+        title="Statistic Chart"
+        icon="ion-ios-stats-outline"
+        desc=""
+    >
         <div>
           <CompossedLineBarArea />
         </div>
       </PapperBlock>
-      <PapperBlock title="Table" whiteBg icon="ion-ios-menu-outline" desc="UI Table when no data to be shown">
+      <PapperBlock
+        title="Table"
+        whiteBg
+        icon="ion-ios-menu-outline"
+        desc="UI Table when no data to be shown"
+      >
         <div>
           <StrippedTable />
         </div>
-      </PapperBlock>
+      </PapperBlock> */}
     </div>
   );
 }

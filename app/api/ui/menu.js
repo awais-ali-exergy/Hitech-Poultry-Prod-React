@@ -1,8 +1,25 @@
-module.exports = [
+import {
+  LayoutDashboard,
+  FileText,
+  Users,
+  KeyRound,
+  AlertTriangle,
+  Menu,
+  File,
+  BookOpen,
+} from "lucide-react";
+
+const menuItems = [
   {
+    key: "dashboard",
+    name: "Dashboard",
+    link: "/app/dashboard",
+    icon: LayoutDashboard,
+  },
+  /*{
     key: 'pages',
     name: 'Pages',
-    icon: 'ion-ios-paper-outline',
+    icon: FileText,
     child: [
       {
         key: 'other_page',
@@ -13,7 +30,7 @@ module.exports = [
         key: 'blank',
         name: 'Blank Page',
         link: '/app',
-        icon: 'ion-ios-document-outline',
+        icon: File,
       },
       {
         key: 'main_page',
@@ -21,41 +38,35 @@ module.exports = [
         title: true,
       },
       {
-        key: 'dashboard',
-        name: 'Dashboard',
-        link: '/app/pages/dashboard',
-        icon: 'ion-ios-home-outline',
-      },
-      {
         key: 'form',
         name: 'Form',
         link: '/app/pages/form',
-        icon: 'ion-ios-list-box-outline',
+        icon: FileText,
       },
       {
         key: 'table',
         name: 'Table',
         link: '/app/pages/table',
-        icon: 'ion-ios-grid-outline',
+        icon: BookOpen,
       },
       {
         key: 'maintenance',
         name: 'Maintenance',
         link: '/maintenance',
-        icon: 'ion-ios-build-outline'
+        icon: Menu
       },
       {
         key: 'coming_soon',
         name: 'Coming Soon',
         link: '/coming-soon',
-        icon: 'ion-ios-bonfire-outline'
+        icon: Menu
       },
     ]
   },
   {
     key: 'auth',
     name: 'Auth Page',
-    icon: 'ion-ios-contact-outline',
+    icon: Users,
     child: [
       {
         key: 'auth_page',
@@ -66,26 +77,26 @@ module.exports = [
         key: 'login',
         name: 'Login',
         link: '/login',
-        icon: 'ion-ios-person-outline'
+        icon: Users
       },
       {
         key: 'register',
         name: 'Register',
         link: '/register',
-        icon: 'ion-ios-key-outline'
+        icon: KeyRound
       },
       {
         key: 'reset',
         name: 'Reset Password',
         link: '/reset-password',
-        icon: 'ion-ios-undo-outline'
+        icon: KeyRound
       },
     ]
   },
   {
     key: 'errors',
     name: 'Errors',
-    icon: 'ion-ios-paw-outline',
+    icon: AlertTriangle,
     child: [
       {
         key: 'errors_page',
@@ -96,13 +107,13 @@ module.exports = [
         key: 'not_found_page',
         name: 'Not Found Page',
         link: '/app/pages/not-found',
-        icon: 'ion-ios-warning-outline'
+        icon: AlertTriangle
       },
       {
         key: 'error_page',
         name: 'Error Page',
         link: '/app/pages/error',
-        icon: 'ion-ios-warning-outline'
+        icon: AlertTriangle
       },
     ]
   },
@@ -110,7 +121,7 @@ module.exports = [
     key: 'menu_levels',
     name: 'Menu Levels',
     multilevel: true,
-    icon: 'ion-ios-menu-outline',
+    icon: Menu,
     child: [
       {
         key: 'level_1',
@@ -139,7 +150,9 @@ module.exports = [
   {
     key: 'no_child',
     name: 'One Level Menu',
-    icon: 'ion-ios-document-outline',
+    icon: File,
     linkParent: '/app/blank-page',
-  }
+  }*/
 ];
+
+export default menuItems;

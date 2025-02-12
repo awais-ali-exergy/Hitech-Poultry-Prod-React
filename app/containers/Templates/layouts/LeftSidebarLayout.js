@@ -1,17 +1,13 @@
-import React, { Fragment } from 'react';
-import { PropTypes } from 'prop-types';
+import React, { Fragment } from "react";
+import { PropTypes } from "prop-types";
 
-import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
+import Fade from "@mui/material/Fade";
+import Typography from "@mui/material/Typography";
 
-import {
-  Header,
-  Sidebar,
-  BreadCrumb,
-} from 'dan-components';
-import dataMenu from 'dan-api/ui/menu';
-import Decoration from '../Decoration';
-import useStyles from '../appStyles-jss';
+import { Header, Sidebar, BreadCrumb } from "dan-components";
+import dataMenu from "dan-api/ui/menu";
+import Decoration from "../Decoration";
+import useStyles from "../appStyles-jss";
 
 function LeftSidebarLayout(props) {
   const { classes, cx } = useStyles();
@@ -29,7 +25,7 @@ function LeftSidebarLayout(props) {
     changeMode,
     place,
     titleException,
-    handleOpenGuide
+    handleOpenGuide,
   } = props;
 
   return (
@@ -49,10 +45,17 @@ function LeftSidebarLayout(props) {
         open={sidebarOpen}
         toggleDrawerOpen={toggleDrawer}
         loadTransition={loadTransition}
+        drawerPaper={sidebarOpen}
         dataMenu={dataMenu}
         leftSidebar
       />
-      <main className={cx(classes.content, !sidebarOpen ? classes.contentPaddingLeft : '')} id="mainContent">
+      <main
+        className={cx(
+          classes.content,
+          !sidebarOpen ? classes.contentPaddingLeft : ""
+        )}
+        id="mainContent"
+      >
         <Decoration
           mode={mode}
           gradient={gradient}
@@ -61,20 +64,37 @@ function LeftSidebarLayout(props) {
           horizontalMenu={false}
         />
         <section className={cx(classes.mainWrap, classes.sidebarLayout)}>
-          {titleException.indexOf(history.location.pathname) < 0 && (
+          {/* {titleException.indexOf(history.location.pathname) < 0 && (
             <div className={classes.pageTitle}>
-              <Typography component="h4" className={bgPosition === 'header' ? classes.darkTitle : classes.lightTitle} variant="h4">{place}</Typography>
-              <BreadCrumb separator=" / " theme={bgPosition === 'header' ? 'dark' : 'light'} location={history.location} />
+              <Typography
+                component="h4"
+                className={
+                  bgPosition === "header"
+                    ? classes.darkTitle
+                    : classes.lightTitle
+                }
+                variant="h4"
+              >
+                {place}
+              </Typography>
+              <BreadCrumb
+                separator=" / "
+                theme={bgPosition === "header" ? "dark" : "light"}
+                location={history.location}
+              />
             </div>
+          )} */}
+          {!pageLoaded && (
+            <img
+              src="/images/spinner.gif"
+              alt="spinner"
+              className={classes.circularProgress}
+            />
           )}
-          {!pageLoaded && (<img src="/images/spinner.gif" alt="spinner" className={classes.circularProgress} />)}
-          <Fade
-            in={pageLoaded}
-            {...(pageLoaded ? { timeout: 700 } : {})}
-          >
-            <div className={!pageLoaded ? classes.hideApp : ''}>
+          <Fade in={pageLoaded} {...(pageLoaded ? { timeout: 700 } : {})}>
+            <div className={!pageLoaded ? classes.hideApp : ""}>
               {/* Application content will load here */}
-              { children }
+              {children}
             </div>
           </Fade>
         </section>
@@ -97,7 +117,7 @@ LeftSidebarLayout.propTypes = {
   bgPosition: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
   titleException: PropTypes.array.isRequired,
-  handleOpenGuide: PropTypes.func.isRequired
+  handleOpenGuide: PropTypes.func.isRequired,
 };
 
 LeftSidebarLayout.defaultProps = {

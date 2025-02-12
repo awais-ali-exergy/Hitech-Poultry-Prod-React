@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
-import { Routes, Route } from 'react-router-dom';
-import Dashboard from '../Templates/Dashboard';
-import { ThemeContext } from './ThemeWrapper';
+import React, { useContext } from "react";
+import { PropTypes } from "prop-types";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "../Templates/Dashboard";
+import { ThemeContext } from "./ThemeWrapper";
 import {
   Parent,
   DashboardPage,
@@ -10,8 +10,8 @@ import {
   Form,
   Table,
   Error,
-  NotFound
-} from '../pageListAsync';
+  NotFound,
+} from "../pageListAsync";
 
 function Application(props) {
   const { history } = props;
@@ -19,10 +19,10 @@ function Application(props) {
   return (
     <Dashboard history={history} changeMode={changeMode}>
       <Routes>
-        <Route path="/" element={<BlankPage />} />
+        <Route path="/" element={<Navigate to="/app/dashboard" replace />} />
         <Route path="blank-page" element={<BlankPage />} />
         <Route path="pages" element={<Parent />} />
-        <Route path="pages/dashboard" element={<DashboardPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
         <Route path="pages/form" element={<Form />} />
         <Route path="pages/table" element={<Table />} />
         <Route path="pages/not-found" element={<NotFound />} />
