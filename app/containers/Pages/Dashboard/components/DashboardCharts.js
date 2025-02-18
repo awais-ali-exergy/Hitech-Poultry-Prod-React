@@ -1,16 +1,16 @@
-import React from "react";
-import { Box, Grid, Paper, Typography } from "@mui/material";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import dayjs from "dayjs";
+import React from 'react';
+import { Grid, Paper } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import dayjs from 'dayjs';
+import CustomLineChart from '../../../../components/Charts/CustomLineChart';
+
+// Styled component for the chart container
+const ChartContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
+  height: '100%',
+}));
 
 // Generate dates starting from August 28, 2023
 const generateDates = (startDate, numWeeks) => {
@@ -19,15 +19,15 @@ const generateDates = (startDate, numWeeks) => {
 
   for (let i = 0; i < numWeeks; i++) {
     dates.push({
-      date: currentDate.format("D MMM YYYY"),
+      date: currentDate.format('D MMM YYYY'),
       week: `Week ${i + 1}`,
     });
-    currentDate = currentDate.add(7, "day");
+    currentDate = currentDate.add(7, 'day');
   }
   return dates;
 };
 
-const dates = generateDates("2023-08-28", 24);
+const dates = generateDates('2023-08-28', 24);
 
 // Feed consumption data with updated metrics
 const feedData = dates.map((dateObj, index) => ({
@@ -53,191 +53,62 @@ const weightData = dates.map((dateObj, index) => ({
   date: dateObj.date,
 }));
 
-const chartCommonProps = {
-  xAxisProps: {
-    dataKey: "week",
-    angle: 90,
-    height: 60,
-    textAnchor: "start",
-    tick: {
-      fontSize: "14px",
-      fill: "#666666",
-      fontWeight: 500,
-      fontFamily: "Arial",
-    },
-  },
-  yAxisProps: {
-    tick: {
-      fontSize: "14px",
-      fill: "#666666",
-      fontWeight: 500,
-      fontFamily: "Arial",
-    },
-  },
-  legendProps: {
-    verticalAlign: "top",
-    height: 36,
-  },
-};
-
 const DashboardCharts = () => {
+  const standardSeries = [
+    { dataKey: 'standard', name: 'Standard', color: '#ff0000' },
+    { dataKey: 'actual', name: 'Actual', color: '#2196f3' },
+  ];
+
+  const penWiseSeries = [
+    { dataKey: 'standard', name: 'Standard', color: '#ff0000' },
+  ];
+
   return (
     <Grid container spacing={3}>
-      {/* Feed Consumption Chart */}
-      <Grid item xs={6}>
-        <Paper
-          elevation={0}
-          sx={{ p: 3, border: 1, borderColor: "grey.200", borderRadius: 2 }}
-        >
-          <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-            Feed in Gram Consumption
-          </Typography>
-          <Box sx={{ height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={feedData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis {...chartCommonProps.xAxisProps} />
-                <YAxis
-                  {...chartCommonProps.yAxisProps}
-                  label={{ value: "Grams", angle: -90, position: "insideLeft" }}
-                />
-                <Tooltip />
-                <Legend {...chartCommonProps.legendProps} />
-                <Line
-                  type="monotone"
-                  dataKey="standard"
-                  stroke="#ff0000"
-                  name="Standard"
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="actual"
-                  stroke="#2196f3"
-                  name="Actual"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </Box>
-        </Paper>
+      {/* First Row */}
+      <Grid item xs={12} md={6}>
+        <ChartContainer>
+          <CustomLineChart
+            title="Feed in Gram Consumption"
+            data={feedData}
+            series={standardSeries}
+            yAxisLabel="Grams"
+          />
+        </ChartContainer>
       </Grid>
 
-      {/* Body Weight Chart */}
-      <Grid item xs={6}>
-        <Paper
-          elevation={0}
-          sx={{ p: 3, border: 1, borderColor: "grey.200", borderRadius: 2 }}
-        >
-          <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-            Body Weight
-          </Typography>
-          <Box sx={{ height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={weightData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis {...chartCommonProps.xAxisProps} />
-                <YAxis
-                  {...chartCommonProps.yAxisProps}
-                  label={{ value: "Grams", angle: -90, position: "insideLeft" }}
-                />
-                <Tooltip />
-                <Legend {...chartCommonProps.legendProps} />
-                <Line
-                  type="monotone"
-                  dataKey="standard"
-                  stroke="#ff0000"
-                  name="Standard"
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="actual"
-                  stroke="#2196f3"
-                  name="Actual"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </Box>
-        </Paper>
+      <Grid item xs={12} md={6}>
+        <ChartContainer>
+          <CustomLineChart
+            title="Body Weight"
+            data={weightData}
+            series={standardSeries}
+            yAxisLabel="Grams"
+          />
+        </ChartContainer>
       </Grid>
 
-      {/* Light Hours Chart */}
-      <Grid item xs={6}>
-        <Paper
-          elevation={0}
-          sx={{ p: 3, border: 1, borderColor: "grey.200", borderRadius: 2 }}
-        >
-          <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-            Light Hours (up to 64 Week)
-          </Typography>
-          <Box sx={{ height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={lightData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis {...chartCommonProps.xAxisProps} />
-                <YAxis
-                  {...chartCommonProps.yAxisProps}
-                  label={{
-                    value: "Light Hours Per Day",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                />
-                <Tooltip />
-                <Legend {...chartCommonProps.legendProps} />
-                <Line
-                  type="monotone"
-                  dataKey="standard"
-                  stroke="#ff0000"
-                  name="Standard"
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="actual"
-                  stroke="#2196f3"
-                  name="Actual"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </Box>
-        </Paper>
+      {/* Second Row */}
+      <Grid item xs={12} md={6}>
+        <ChartContainer>
+          <CustomLineChart
+            title="Light Hours (up to 64 Week)"
+            data={lightData}
+            series={standardSeries}
+            yAxisLabel="Light Hours Per Day"
+          />
+        </ChartContainer>
       </Grid>
 
-      {/* Body Weight Pen Wise Chart */}
-      <Grid item xs={6}>
-        <Paper
-          elevation={0}
-          sx={{ p: 3, border: 1, borderColor: "grey.200", borderRadius: 2 }}
-        >
-          <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-            Body Weight Pen Wise
-          </Typography>
-          <Box sx={{ height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={weightData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis {...chartCommonProps.xAxisProps} />
-                <YAxis
-                  {...chartCommonProps.yAxisProps}
-                  label={{ value: "Grams", angle: -90, position: "insideLeft" }}
-                />
-                <Tooltip />
-                <Legend {...chartCommonProps.legendProps} />
-                <Line
-                  type="monotone"
-                  dataKey="standard"
-                  stroke="#ff0000"
-                  name="Standard"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </Box>
-        </Paper>
+      <Grid item xs={12} md={6}>
+        <ChartContainer>
+          <CustomLineChart
+            title="Body Weight Pen Wise"
+            data={weightData}
+            series={penWiseSeries}
+            yAxisLabel="Grams"
+          />
+        </ChartContainer>
       </Grid>
     </Grid>
   );
