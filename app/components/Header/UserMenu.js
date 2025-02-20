@@ -1,44 +1,47 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { Link } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import Info from '@mui/icons-material/Info';
-import Warning from '@mui/icons-material/Warning';
-import Check from '@mui/icons-material/CheckCircle';
-import Error from '@mui/icons-material/RemoveCircle';
-import ExitToApp from '@mui/icons-material/ExitToApp';
-import Badge from '@mui/material/Badge';
-import Divider from '@mui/material/Divider';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import dummy from 'dan-api/dummy/dummyContents';
-import messageStyles from 'dan-styles/Messages.scss';
-import avatarApi from 'dan-api/images/avatars';
-import link from 'dan-api/ui/link';
-import useStyles from './header-jss';
-
+import { Link } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import Info from "@mui/icons-material/Info";
+import Warning from "@mui/icons-material/Warning";
+import Check from "@mui/icons-material/CheckCircle";
+import Error from "@mui/icons-material/RemoveCircle";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Badge from "@mui/material/Badge";
+import Divider from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import dummy from "dan-api/dummy/dummyContents";
+import messageStyles from "dan-styles/Messages.scss";
+import avatarApi from "dan-api/images/avatars";
+import link from "dan-api/ui/link";
+import useStyles from "./header-jss";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/modules/userSlice";
 function UserMenu(props) {
   const { classes, cx } = useStyles();
+  const dispatch = useDispatch();
   const [menuState, setMenuState] = useState({
     anchorEl: null,
-    openMenu: null
+    openMenu: null,
   });
 
-  const handleMenu = menu => (event) => {
+  const handleMenu = (menu) => (event) => {
     const { openMenu } = menuState;
-    setMenuState({
+  setMenuState({
       openMenu: openMenu === menu ? null : menu,
-      anchorEl: event.currentTarget
+      anchorEl: event.currentTarget,
     });
   };
 
   const handleClose = () => {
+    dispatch(logout());
     setMenuState({ anchorEl: null, openMenu: null });
   };
 
@@ -48,10 +51,11 @@ function UserMenu(props) {
     <div>
       <IconButton
         aria-haspopup="true"
-        onClick={handleMenu('notification')}
+        onClick={handleMenu("notification")}
         color="inherit"
         className={cx(classes.notifIcon, dark ? classes.dark : classes.light)}
-        size="large">
+        size="large"
+      >
         <Badge className={classes.badge} badgeContent={4} color="secondary">
           <i className="ion-ios-notifications-outline" />
         </Badge>
@@ -60,12 +64,12 @@ function UserMenu(props) {
         id="menu-notification"
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         className={classes.notifMenu}
         PaperProps={{
@@ -73,7 +77,7 @@ function UserMenu(props) {
             width: 350,
           },
         }}
-        open={openMenu === 'notification'}
+        open={openMenu === "notification"}
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
@@ -81,7 +85,10 @@ function UserMenu(props) {
             <ListItemAvatar>
               <Avatar alt="User Name" src={avatarApi[0]} />
             </ListItemAvatar>
-            <ListItemText primary={dummy.text.subtitle} secondary={dummy.text.date} />
+            <ListItemText
+              primary={dummy.text.subtitle}
+              secondary={dummy.text.date}
+            />
           </div>
         </MenuItem>
         <Divider variant="inset" />
@@ -92,7 +99,11 @@ function UserMenu(props) {
                 <Info />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={dummy.text.sentences} className={classes.textNotif} secondary={dummy.text.date} />
+            <ListItemText
+              primary={dummy.text.sentences}
+              className={classes.textNotif}
+              secondary={dummy.text.date}
+            />
           </div>
         </MenuItem>
         <Divider variant="inset" />
@@ -103,7 +114,11 @@ function UserMenu(props) {
                 <Check />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={dummy.text.subtitle} className={classes.textNotif} secondary={dummy.text.date} />
+            <ListItemText
+              primary={dummy.text.subtitle}
+              className={classes.textNotif}
+              secondary={dummy.text.date}
+            />
           </div>
         </MenuItem>
         <Divider variant="inset" />
@@ -114,7 +129,11 @@ function UserMenu(props) {
                 <Warning />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={dummy.text.subtitle} className={classes.textNotif} secondary={dummy.text.date} />
+            <ListItemText
+              primary={dummy.text.subtitle}
+              className={classes.textNotif}
+              secondary={dummy.text.date}
+            />
           </div>
         </MenuItem>
         <Divider variant="inset" />
@@ -125,36 +144,45 @@ function UserMenu(props) {
                 <Error />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Suspendisse pharetra pulvinar sollicitudin. Aenean ut orci eu odio cursus lobortis eget tempus velit. " className={classes.textNotif} secondary="Jan 9, 2016" />
+            <ListItemText
+              primary="Suspendisse pharetra pulvinar sollicitudin. Aenean ut orci eu odio cursus lobortis eget tempus velit. "
+              className={classes.textNotif}
+              secondary="Jan 9, 2016"
+            />
           </div>
         </MenuItem>
       </Menu>
-      <Button onClick={handleMenu('user-setting')}>
-        <Avatar
-          alt={dummy.user.name}
-          src={dummy.user.avatar}
-        />
+      <Button onClick={handleMenu("user-setting")}>
+        <Avatar alt={dummy.user.name} src={dummy.user.avatar} />
       </Button>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
-        open={openMenu === 'user-setting'}
+        open={openMenu === "user-setting"}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} component={Link} to={link.profile}>My Profile</MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to={link.calendar}>My Calendar</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to={link.profile}>
+          My Profile
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to={link.calendar}>
+          My Calendar
+        </MenuItem>
         <MenuItem onClick={handleClose} component={Link} to={link.email}>
           My Inbox
           <ListItemIcon>
-            <Badge className={cx(classes.badge, classes.badgeMenu)} badgeContent={2} color="secondary" />
+            <Badge
+              className={cx(classes.badge, classes.badgeMenu)}
+              badgeContent={2}
+              color="secondary"
+            />
           </ListItemIcon>
         </MenuItem>
         <Divider />
@@ -170,12 +198,11 @@ function UserMenu(props) {
 }
 
 UserMenu.propTypes = {
-
   dark: PropTypes.bool,
 };
 
 UserMenu.defaultProps = {
-  dark: false
+  dark: false,
 };
 
 export default UserMenu;

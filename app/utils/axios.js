@@ -1,12 +1,11 @@
 import axios from "axios";
 
-export const baseURL=  "http://192.168.69.201:8082/"
+// export const baseURL = "http://155.135.1.86:8082/";
+export const baseURL = "http://18.199.188.82:8082/";
+
 const axiosInstance = axios.create({
   baseURL: baseURL,
   timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // Add a request interceptor
