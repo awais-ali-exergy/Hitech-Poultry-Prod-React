@@ -40,7 +40,7 @@ const LocationHeader = () => {
       setSelectedLocation({
         farm,
         house,
-        pen: null,
+        pen: house.pens[0] || null,
       })
     );
     handleClose();
@@ -143,7 +143,7 @@ const LocationHeader = () => {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "start",
-                    gap: .5,
+                    gap: 0.5,
                     position: "sticky",
                     top: "200px",
                     mb: "auto",

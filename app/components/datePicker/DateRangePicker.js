@@ -1,35 +1,19 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  TextField,
-  InputAdornment,
-  Popover,
-} from "@mui/material";
+import { Box, Button, Stack, Popover, TextField } from "@mui/material";
 import {
   CalendarMonth as CalendarIcon,
   ArrowDropDown as ArrowDropDownIcon,
-  ManageSearch as SearchIcon,
   Clear as ClearIcon,
 } from "@mui/icons-material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-const DateRangePicker = ({
-  dateRange,
-  onDateRangeChange,
-  onSearch,
-  showHoursOption = true,
-  showPresets = true,
-  className,
-}) => {
+const DateRangePicker = ({ dateRange, onDateRangeChange, onSearch }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [hoursInput, setHoursInput] = useState("");
   const [tempDateRange, setTempDateRange] = useState(dateRange);
+  const [selectedPeriod, setSelectedPeriod] = useState("TODAY"); // Track selected period
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -43,38 +27,13 @@ const DateRangePicker = ({
   const open = Boolean(anchorEl);
 
   const handleDateRangeSelect = (range) => {
-    let start, end;
-    const now = dayjs();
-
-    switch (range) {
-      case "last24":
-        start = now.subtract(24, "hour");
-        end = now;
-        break;
-      case "lastWeek":
-        start = now.subtract(7, "day");
-        end = now;
-        break;
-      case "lastMonth":
-        start = now.subtract(1, "month");
-        end = now;
-        break;
-      case "customHours":
-        if (hoursInput && !isNaN(hoursInput)) {
-          start = now.subtract(parseInt(hoursInput), "hour");
-          end = now;
-        }
-        break;
-      default:
-        return;
-    }
-
-    if (start && end) {
-      const newRange = { start, end };
-      onDateRangeChange(newRange);
-      onSearch(newRange);
-      handleClose();
-    }
+    setSelectedPeriod(range);
+    const searchParams = {
+      isPreset: true,
+      timePeriod: range,
+    };
+    onSearch(searchParams);
+    handleClose();
   };
 
   const handleDateChange = (type) => (newValue) => {
@@ -82,16 +41,23 @@ const DateRangePicker = ({
       ...prev,
       [type]: newValue,
     }));
+    setSelectedPeriod("RANGE"); // Set to custom range when dates are modified
   };
 
   const handleApply = () => {
+    setSelectedPeriod("RANGE");
     onDateRangeChange(tempDateRange);
-    onSearch(tempDateRange);
+    onSearch({
+      isPreset: false,
+      start: tempDateRange.start,
+      end: tempDateRange.end,
+    });
     handleClose();
   };
 
   const handleClear = () => {
     const newRange = { start: null, end: null };
+    setSelectedPeriod(null);
     onDateRangeChange(newRange);
     handleClose();
   };
@@ -99,15 +65,13 @@ const DateRangePicker = ({
   const formatDateRange = () => {
     if (!dateRange.start || !dateRange.end) return "Select date range";
 
+    if (selectedPeriod === "TODAY") return "Today";
+    if (selectedPeriod === "THIS_WEEK") return "This Week";
+    if (selectedPeriod === "LAST_WEEK") return "Last Week";
+
     const start = dayjs(dateRange.start);
     const end = dayjs(dateRange.end);
-
-    if (start.isSame(end, "day")) {
-      return `${start.format("MMM D, YYYY")} ${start.format("h:mm A")}`;
-    }
-    return `${start.format("MMM D, h:mm A")} - ${end.format(
-      "MMM D, YYYY h:mm A"
-    )}`;
+    return `${start.format("MMM D, YYYY")} - ${end.format("MMM D, YYYY")}`;
   };
 
   return (
@@ -154,32 +118,32 @@ const DateRangePicker = ({
           }}
         >
           <Stack spacing={2}>
-            {showPresets && (
-              <>
-                <Button
-                  onClick={() => handleDateRangeSelect("last24")}
-                  variant="outlined"
-                >
-                  Last 24 Hours
-                </Button>
-                <Button
-                  onClick={() => handleDateRangeSelect("lastWeek")}
-                  variant="outlined"
-                >
-                  Last Week
-                </Button>
-                <Button
-                  onClick={() => handleDateRangeSelect("lastMonth")}
-                  variant="outlined"
-                >
-                  Last Month
-                </Button>
-              </>
-            )}
+            <Button
+              onClick={() => handleDateRangeSelect("TODAY")}
+              variant={selectedPeriod === "TODAY" ? "contained" : "outlined"}
+            >
+              Today
+            </Button>
+            <Button
+              onClick={() => handleDateRangeSelect("THIS_WEEK")}
+              variant={
+                selectedPeriod === "THIS_WEEK" ? "contained" : "outlined"
+              }
+            >
+              This Week
+            </Button>
+            <Button
+              onClick={() => handleDateRangeSelect("LAST_WEEK")}
+              variant={
+                selectedPeriod === "LAST_WEEK" ? "contained" : "outlined"
+              }
+            >
+              Last Week
+            </Button>
 
             <Stack spacing={2}>
-              <DateTimePicker
-                label="Start Date & Time"
+              <DatePicker
+                label="Start Date"
                 value={tempDateRange.start}
                 onChange={handleDateChange("start")}
                 renderInput={(params) => (
@@ -193,11 +157,11 @@ const DateRangePicker = ({
                   />
                 )}
               />
-              <DateTimePicker
-                label="End Date & Time"
+              <DatePicker
+                label="End Date"
                 value={tempDateRange.end}
                 onChange={handleDateChange("end")}
-                minDateTime={tempDateRange.start}
+                minDate={tempDateRange.start}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -231,12 +195,12 @@ const DateRangePicker = ({
               </Button>
               <Button
                 size="small"
-                variant="contained"
+                variant={selectedPeriod === "RANGE" ? "contained" : "outlined"}
                 onClick={handleApply}
                 disabled={!tempDateRange.start || !tempDateRange.end}
                 fullWidth
               >
-                Apply
+                Apply Range
               </Button>
             </Stack>
           </Stack>

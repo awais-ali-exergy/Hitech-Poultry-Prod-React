@@ -1,30 +1,54 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios";
 
-// Thunks
 export const fetchFarms = createAsyncThunk(
   "farms/fetchFarms",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const response = await axiosInstance.get("/api/farms");
+      const state = getState();
+      const token = state.user.token;
+      const companyId = state.user.user?.companyId;
+      if (!token || !companyId) {
+        throw new Error("Authentication required");
+      }
+
+      const response = await axiosInstance.get(`/api/farms/${companyId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
 export const fetchSensorReadings = createAsyncThunk(
   "sensors/fetchReadings",
-  async ({ hours, range, startDate, endDate }, { rejectWithValue }) => {
+  async (
+    { timePeriod, startDate, endDate, deviceId },
+    { rejectWithValue, getState }
+  ) => {
     try {
+      const state = getState();
+      const token = state.user.token;
+
+      if (!token) {
+        throw new Error("Authentication required");
+      }
+
       const response = await axiosInstance.get(
         "/api/sensor-readings/by-duration",
         {
           params: {
-            hours,
-            range,
+            timePeriod,
             startDate,
             endDate,
+            deviceId,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -68,7 +92,7 @@ const farmsSlice = createSlice({
       })
       .addCase(fetchFarms.fulfilled, (state, action) => {
         state.loading = false;
-        state.locations = action.payload;
+        state.locations = action.payload.data;
       })
       .addCase(fetchFarms.rejected, (state, action) => {
         state.loading = false;
