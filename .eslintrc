@@ -7,18 +7,21 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true,
+    "mocha": true
   },
   "parser": "@babel/eslint-parser",
   "rules": {
     "no-param-reassign": 0,
     "import/no-import-module-exports": 0,
+    "react/prop-types": 0,
     "no-nested-ternary": 0,
     "import/no-unresolved": 0,
     "import/no-named-as-default": 0,
     "no-unused-expressions": 0,
-    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "comma-dangle": 0, // not sure why airbnb turned this on. gross!
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "no-plusplus": 0, // Add this to allow ++ operator
+    "react/jsx-no-undef": [2, { "allowGlobals": true }],
     "no-console": 0,
     "linebreak-style": 0,
     "no-alert": 0,
@@ -39,13 +42,9 @@
     "react/no-typos": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "react/default-props-match-prop-types": 0,
-    "arrow-parens": 0,
+    "arrow-parens": 0
   },
-  "plugins": [
-    "react",
-    "import",
-    "flowtype",
-  ],
+  "plugins": ["react", "import", "flowtype"],
   "settings": {
     "import/parser": "babel-eslint",
     "import/resolve": {
@@ -59,6 +58,6 @@
     "__CLIENT__": true,
     "__SERVER__": true,
     "beforeAll": true,
-    "afterAll": true,
+    "afterAll": true
   }
 }
