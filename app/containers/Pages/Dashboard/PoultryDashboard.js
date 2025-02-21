@@ -95,25 +95,26 @@ const Dashboard = () => {
         {selectedLocation.house ? (
           <Tabs
             sx={{
-              mb: 0,
+              mb: 2,
               pl: 1,
+              borderBottom: "1px solid",
+              borderColor: "grey.200",
               "& .MuiTab-root": {
                 textTransform: "none",
-                minHeight: "48px",
-                minWidth: "120px", // Add minimum width
-                px: 3, // Add horizontal padding
-                border: "1px solid",
-                borderColor: "grey.200",
-                borderBottom: "none",
-                borderTopLeftRadius: "8px",
-                borderTopRightRadius: "8px",
-                mr: 1,
+                height: "48px",
+                minWidth: "120px",
+                px: 3,
+                boxSizing: "border-box",
+                py: 0,
+
                 fontSize: "0.975rem",
                 fontWeight: 500,
                 color: "text.secondary",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 "&.Mui-selected": {
                   color: "primary.main",
-                  fontWeight: 600,
                   background: (theme) =>
                     alpha(theme.palette.primary.main, 0.04),
                   borderColor: "grey.200",
@@ -126,8 +127,8 @@ const Dashboard = () => {
               },
               "& .MuiTabs-indicator": {
                 height: 3,
-                borderTopLeftRadius: 3,
-                borderTopRightRadius: 3,
+                borderRadius: 1.5,
+                bottom: 0,
               },
             }}
             value={currentPenIndex}
@@ -150,7 +151,7 @@ const Dashboard = () => {
       </Paper>
 
       {/* Combined Data View and Charts Container */}
-      {/* <Paper sx={{ p: 3, borderRadius: 2 }}>
+      <Paper sx={{ p: 3, borderRadius: 2 }}>
         <Stack spacing={1} sx={{ mb: 3 }}>
           <Typography variant="h5" fontWeight={600}>
             Performance Analytics
@@ -188,7 +189,7 @@ const Dashboard = () => {
         </Box>
 
         <DashboardCharts />
-      </Paper> */}
+      </Paper>
     </Box>
   );
 };

@@ -74,7 +74,7 @@ export const defaultReadings = {
   temperature: "24.5°C",
   humidity: "65%",
   light: "80 lux",
-  ammonia: "15 ppm",
+  ammonia: "0 ppm",
 };
 
 // Metric definitions
