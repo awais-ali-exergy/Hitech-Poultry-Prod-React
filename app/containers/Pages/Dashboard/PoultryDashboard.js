@@ -20,10 +20,15 @@ import { styled } from "@mui/material/styles";
 import LocationHeader from "./LocationHeader";
 import {
   selectSelectedLocation,
+  selectSelectedSensor,
   setSelectedLocation,
 } from "../../../redux/modules/farmSlice";
 import { useDispatch, useSelector } from "react-redux";
 import DashboardCharts from "./components/DashboardCharts";
+import ImageHighlight from "./components/ImageHighlighter";
+import PenPreviewTabs from "./components/PenPreviewTabs";
+import test from "../../../../public/test.jpg";
+import SensorMonitoringDashboard from "./components/SensorMonitoringDashboard";
 import SensorMonitoring from "./components/SensorMonitoring";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -61,7 +66,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const selectedLocation = useSelector(selectSelectedLocation);
   const [selectedView, setSelectedView] = useState("KPI");
-
+  const selectedSensor = useSelector(selectSelectedSensor);
   // Get pens from selected house
   const pens = selectedLocation.house?.pens || [];
 
@@ -91,53 +96,18 @@ const Dashboard = () => {
   return (
     <Box sx={{ p: 0, minHeight: "100vh" }}>
       <LocationHeader />
-      <Box>
-        {selectedLocation.house ? (
-          <Tabs
-            sx={{
-              mb: 2,
-              pl: 1,
-              borderBottom: "1px solid",
-              borderColor: "grey.200",
-              "& .MuiTab-root": {
-                textTransform: "none",
-                height: "48px",
-                minWidth: "120px",
-                px: 3,
-                boxSizing: "border-box",
-                py: 0,
+      <SensorMonitoringDashboard pens={pens} />
+      <SensorMonitoring selectedPen={selectedSensor} />
 
-                fontSize: "0.975rem",
-                fontWeight: 500,
-                color: "text.secondary",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                "&.Mui-selected": {
-                  color: "primary.main",
-                  background: (theme) =>
-                    alpha(theme.palette.primary.main, 0.04),
-                  borderColor: "grey.200",
-                },
-                "&:hover": {
-                  background: (theme) =>
-                    alpha(theme.palette.primary.main, 0.04),
-                  color: "primary.main",
-                },
-              },
-              "& .MuiTabs-indicator": {
-                height: 3,
-                borderRadius: 1.5,
-                bottom: 0,
-              },
-            }}
-            value={currentPenIndex}
-            onChange={handlePenChange}
-          >
-            {pens.map((pen) => (
-              <Tab key={pen.id} label={pen.penName} />
-            ))}
-          </Tabs>
+      {/* <ImageHighlight /> */}
+      <Box mt={3}>
+        {selectedLocation.house ? (
+          <PenPreviewTabs
+            pens={pens}
+            currentPenIndex={currentPenIndex}
+            onPenChange={handlePenChange}
+            farmLayoutImage={test}
+          />
         ) : (
           <Box sx={{ mb: 2, p: 2 }}>
             <Typography color="text.secondary">
@@ -146,11 +116,6 @@ const Dashboard = () => {
           </Box>
         )}
       </Box>
-      <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
-        <SensorMonitoring selectedPen={selectedLocation.pen} />
-      </Paper>
-
-      {/* Combined Data View and Charts Container */}
       <Paper sx={{ p: 3, borderRadius: 2 }}>
         <Stack spacing={1} sx={{ mb: 3 }}>
           <Typography variant="h5" fontWeight={600}>
