@@ -7,10 +7,12 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
 
+// Interactive SVG component for visualizing farm pen sensors with zoom/pan capability
 const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
   const theme = useTheme();
   const transformComponentRef = useRef(null);
 
+  // TODO==> actuallly read the docs to properly do the zooming. temporarily adding gpt code
   const goToSelectedSensor = () => {
     if (selectedSensor?.penName && transformComponentRef.current) {
       const sensorId = PEN_TO_SVG_MAP[selectedSensor.penName];
@@ -18,6 +20,7 @@ const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
 
       if (sensorElement && transformComponentRef.current) {
         const zoomUtils = transformComponentRef.current;
+        // Handle API differences between react-zoom-pan-pinch versions
         if (typeof zoomUtils.zoomToElement === "function") {
           zoomUtils.zoomToElement(sensorElement, 2);
         } else if (typeof zoomUtils.setTransform === "function") {
@@ -33,15 +36,14 @@ const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
     }
   };
 
-  // Add useEffect to automatically zoom to selected sensor
   useEffect(() => {
     if (selectedSensor?.penName && transformComponentRef.current) {
-      // Small delay to ensure the DOM is fully updated
+      // Small delay to ensure the DOM is fully updated aka JUGAAR
       setTimeout(() => {
         goToSelectedSensor();
       }, 100);
     }
-  }, [selectedSensor]); // Trigger whenever selectedSensor changes
+  }, [selectedSensor]);
 
   return (
     <Box sx={{ width: "100%", position: "relative" }}>
@@ -98,6 +100,7 @@ const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
             filter: drop-shadow(0 0 5px ${theme.palette.error.main});
             animation: ping 1.5s ease-in-out infinite, glow 3s ease-in-out infinite;
           }
+          /* Fix for TransformWrapper component width issues */
           .transform-component-module_wrapper__1_Fgj {
             width: 100% !important;
           }
@@ -133,7 +136,6 @@ const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
                 viewBox="0 0 3002 2402"
                 width="100%"
               >
-                {/* Base Image Layer */}
                 <g id="Layer_1">
                   <image
                     style={{ overflow: "visible" }}
@@ -142,7 +144,6 @@ const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
                   />
                 </g>
 
-                {/* Sensor Polygons */}
                 {SENSOR_POLYGONS.map((sensor) => (
                   <g
                     key={sensor.id}
@@ -161,7 +162,6 @@ const FarmLayoutSVG = ({ selectedSensor, onSensorClick }) => {
               </svg>
             </TransformComponent>
 
-            {/* Floating Control Buttons */}
             <Box
               sx={{
                 position: "absolute",
