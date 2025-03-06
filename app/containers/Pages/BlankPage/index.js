@@ -1,10 +1,10 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
-import { PapperBlock } from 'dan-components';
+import React from "react";
+import { Helmet } from "react-helmet";
+import brand from "dan-api/dummy/brand";
+import { PapperBlock } from "dan-components";
 
 function BlankPage() {
-  const title = brand.name + ' - Blank Page';
+  const title = brand.name + " - Blank Page";
   const description = brand.desc;
 
   return (

@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { PropTypes } from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { GuideSlider } from 'dan-components';
-import { toggleAction, openAction, playTransitionAction } from 'dan-redux/modules/ui';
-import { useLocation } from 'react-router-dom';
-import LeftSidebarLayout from './layouts/LeftSidebarLayout';
-import LeftSidebarBigLayout from './layouts/LeftSidebarBigLayout';
-import DropMenuLayout from './layouts/DropMenuLayout';
-import MegaMenuLayout from './layouts/MegaMenuLayout';
-import useStyles from './appStyles-jss';
+import React, { useState, useEffect } from "react";
+import { PropTypes } from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { GuideSlider } from "dan-components";
+import {
+  toggleAction,
+  openAction,
+  playTransitionAction,
+} from "dan-redux/modules/ui";
+import { useLocation } from "react-router-dom";
+import LeftSidebarLayout from "./layouts/LeftSidebarLayout";
+import LeftSidebarBigLayout from "./layouts/LeftSidebarBigLayout";
+import DropMenuLayout from "./layouts/DropMenuLayout";
+import MegaMenuLayout from "./layouts/MegaMenuLayout";
+import useStyles from "./appStyles-jss";
 
 function Dashboard(props) {
   const { classes, cx } = useStyles();
@@ -51,27 +55,30 @@ function Dashboard(props) {
   };
 
   const { changeMode, children } = props;
-  const titleException = ['/app'];
-  const parts = location.pathname.split('/');
-  const place = parts[parts.length - 1].replace('-', ' ');
+  const titleException = ["/app"];
+  const parts = location.pathname.split("/");
+  const place = parts[parts.length - 1].replace("-", " ");
   return (
     <div
       style={{ minHeight: appHeight }}
-      className={
-        cx(
-          classes.appFrameInner,
-          layout === 'top-navigation' || layout === 'mega-menu' ? classes.topNav : classes.sideNav,
-          mode === 'dark' ? 'dark-mode' : 'light-mode'
-        )
-      }
+      className={cx(
+        classes.appFrameInner,
+        layout === "top-navigation" || layout === "mega-menu"
+          ? classes.topNav
+          : classes.sideNav,
+        mode === "dark" ? "dark-mode" : "light-mode"
+      )}
     >
       <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
-      { /* Left Sidebar Layout */
-        layout === 'left-sidebar' && (
+      {
+        /* Left Sidebar Layout */
+        layout === "left-sidebar" && (
           <LeftSidebarLayout
             history={history}
             toggleDrawer={() => dispatch(toggleAction())}
-            loadTransition={(payload) => dispatch(playTransitionAction(payload))}
+            loadTransition={(payload) =>
+              dispatch(playTransitionAction(payload))
+            }
             changeMode={changeMode}
             sidebarOpen={sidebarOpen}
             pageLoaded={pageLoaded}
@@ -83,16 +90,19 @@ function Dashboard(props) {
             titleException={titleException}
             handleOpenGuide={handleOpenGuide}
           >
-            { children }
+            {children}
           </LeftSidebarLayout>
         )
       }
-      { /* Left Big-Sidebar Layout */
-        layout === 'big-sidebar' && (
+      {
+        /* Left Big-Sidebar Layout */
+        layout === "big-sidebar" && (
           <LeftSidebarBigLayout
             history={history}
             toggleDrawer={() => dispatch(toggleAction())}
-            loadTransition={(payload) => dispatch(playTransitionAction(payload))}
+            loadTransition={(payload) =>
+              dispatch(playTransitionAction(payload))
+            }
             changeMode={changeMode}
             sidebarOpen={sidebarOpen}
             pageLoaded={pageLoaded}
@@ -104,16 +114,19 @@ function Dashboard(props) {
             titleException={titleException}
             handleOpenGuide={handleOpenGuide}
           >
-            { children }
+            {children}
           </LeftSidebarBigLayout>
         )
       }
-      { /* Top Bar with Dropdown Menu */
-        layout === 'top-navigation' && (
+      {
+        /* Top Bar with Dropdown Menu */
+        layout === "top-navigation" && (
           <DropMenuLayout
             history={history}
             toggleDrawer={() => dispatch(toggleAction())}
-            loadTransition={(payload) => dispatch(playTransitionAction(payload))}
+            loadTransition={(payload) =>
+              dispatch(playTransitionAction(payload))
+            }
             changeMode={changeMode}
             sidebarOpen={sidebarOpen}
             pageLoaded={pageLoaded}
@@ -125,16 +138,19 @@ function Dashboard(props) {
             titleException={titleException}
             handleOpenGuide={handleOpenGuide}
           >
-            { children }
+            {children}
           </DropMenuLayout>
         )
       }
-      { /* Top Bar with Mega Menu */
-        layout === 'mega-menu' && (
+      {
+        /* Top Bar with Mega Menu */
+        layout === "mega-menu" && (
           <MegaMenuLayout
             history={history}
             toggleDrawer={() => dispatch(toggleAction())}
-            loadTransition={(payload) => dispatch(playTransitionAction(payload))}
+            loadTransition={(payload) =>
+              dispatch(playTransitionAction(payload))
+            }
             changeMode={changeMode}
             sidebarOpen={sidebarOpen}
             pageLoaded={pageLoaded}
@@ -146,7 +162,7 @@ function Dashboard(props) {
             titleException={titleException}
             handleOpenGuide={handleOpenGuide}
           >
-            { children }
+            {children}
           </MegaMenuLayout>
         )
       }

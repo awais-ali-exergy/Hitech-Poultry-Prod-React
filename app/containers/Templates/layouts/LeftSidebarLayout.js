@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { Header, Sidebar, BreadCrumb } from "dan-components";
 import dataMenu from "dan-api/ui/menu";
@@ -85,11 +86,9 @@ function LeftSidebarLayout(props) {
             </div>
           )} */}
           {!pageLoaded && (
-            <img
-              src="/images/spinner.gif"
-              alt="spinner"
-              className={classes.circularProgress}
-            />
+            <div className={classes.circularProgress}>
+              <CircularProgress size={64} />
+            </div>
           )}
           <Fade in={pageLoaded} {...(pageLoaded ? { timeout: 700 } : {})}>
             <div className={!pageLoaded ? classes.hideApp : ""}>
