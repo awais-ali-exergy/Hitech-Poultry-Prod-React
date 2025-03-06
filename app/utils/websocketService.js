@@ -2,7 +2,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { baseURL } from "./axios";
 
-class WebSocketService {
+export class WebSocketService {
   constructor() {
     this.stompClient = null;
     this.callback = null;
@@ -148,4 +148,3 @@ class WebSocketService {
   }
 }
 
-export const wsService = new WebSocketService();

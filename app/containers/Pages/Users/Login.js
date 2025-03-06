@@ -132,7 +132,7 @@ const LoginV2 = () => {
                   letterSpacing: "-0.02em",
                 }}
               >
-                Welcome to HI-TECH Poultry Feeds
+                Welcome to Hi-Tech Poultry
               </Typography>
               <Typography
                 sx={{

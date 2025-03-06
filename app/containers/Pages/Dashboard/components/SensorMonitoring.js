@@ -1,121 +1,171 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Box, Typography, Stack, Button, Collapse } from "@mui/material";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { fetchSensorReadings } from "../../../../redux/modules/farmSlice";
-import { useDispatch } from "react-redux";
-import AlertMessage from "../../../../components/alertMessage/AlertMessage";
+import React, { useState } from "react";
 import {
-  formatValue,
-  dataKeyMap,
-  getMetricDefinitions,
-  defaultReadings,
-} from "../util/monitoringUtils";
-import MetricCards from "./MetricCards";
+  Box,
+  Paper,
+  Typography,
+  Button,
+  ButtonGroup,
+  Stack,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+import ThermostatIcon from "@mui/icons-material/Thermostat";
+import WaterDropIcon from "@mui/icons-material/WaterDrop";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import AirIcon from "@mui/icons-material/Air";
 import HistoricalChart from "./HistoricalChart";
 import LiveChart from "./LiveChart";
+import SensorContext from "./SensorContext";
+import { fetchSensorReadings } from "../../../../redux/modules/farmSlice";
+
+const metrics = [
+  {
+    id: "temperature",
+    label: "Temperature",
+    icon: ThermostatIcon,
+    unit: "°C",
+    max: 30,
+    min: 20,
+  },
+  {
+    id: "humidity",
+    label: "Humidity",
+    icon: WaterDropIcon,
+    unit: "%",
+    max: 80,
+    min: 40,
+  },
+  {
+    id: "light",
+    label: "Light",
+    icon: LightModeIcon,
+    unit: "lux",
+    max: 1000,
+    min: 100,
+  },
+  {
+    id: "ammonia",
+    label: "Ammonia",
+    icon: AirIcon,
+    unit: "ppm",
+    max: 15,
+    min: 0,
+  },
+];
 
 const SensorMonitoring = ({ selectedPen }) => {
   const [selectedMetric, setSelectedMetric] = useState("temperature");
-  const [latestReadings, setLatestReadings] = useState(defaultReadings);
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [alert, setAlert] = useState({
-    open: false,
-    severity: "info",
-    message: "",
-    actions: [],
-  });
-  const dispatch = useDispatch();
-
-  const metrics = useMemo(
-    () => getMetricDefinitions(latestReadings),
-    [latestReadings]
-  );
-
   const selectedMetricData = metrics.find((m) => m.id === selectedMetric);
-
-  const handleToggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
 
   return (
-    <Box>
-      <AlertMessage
-        open={alert.open}
-        setAlert={setAlert}
-        severity={alert.severity}
-        message={alert.message}
-        actions={alert.actions}
-      />
-
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h5" fontWeight={600}>
-            Real-Time Sensor Readings
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Live streaming data updates for temperature, humidity, light, and
-            ammonia levels
-          </Typography>
-        </Box>
-        <Button
-          onClick={handleToggleExpand}
-          size="small"
-          variant="outlined"
-          endIcon={
-            <Box
-              component="span"
-              sx={{
-                display: "flex",
-                transition: "transform 0.2s",
-                transform: isExpanded ? "rotate(0deg)" : "rotate(-180deg)",
-              }}
-            >
-              {isExpanded ? <ChevronUp /> : <ChevronDown />}
-            </Box>
-          }
+    <Box sx={{ mt: 3 }}>
+      <Stack
+        direction={isTablet ? "column" : "row"}
+        spacing={2}
+        sx={{ width: "100%" }}
+      >
+        {/* Left side: Charts and Buttons */}
+        <Paper
+          elevation={0}
           sx={{
-            minWidth: "100px",
-            whiteSpace: "nowrap",
+            flex: 1,
+            p: 3,
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 2,
+            minWidth: 0,
           }}
         >
-          {isExpanded ? "Collapse" : "Expand"}
-        </Button>
-      </Stack>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            {selectedPen?.penName} - {selectedMetricData?.label}
+          </Typography>
 
-      <Collapse in={isExpanded}>
-        {selectedPen && (
-          <MetricCards
-            metrics={metrics}
-            selectedMetric={selectedMetric}
-            onMetricSelect={setSelectedMetric}
-          />
-        )}
+          {/* Metric Buttons */}
+          <ButtonGroup
+            variant="contained"
+            disableElevation
+            orientation={
+              isTablet && theme.breakpoints.down("sm")
+                ? "vertical"
+                : "horizontal"
+            }
+            sx={{
+              mb: 3,
+              width: "100%",
+              flexWrap: isTablet ? "wrap" : "nowrap",
+              "& .MuiButton-root": {
+                flex: isTablet ? "1 1 40%" : 1,
+                py: 1.5,
+                textTransform: "none",
+                borderRadius: 1,
+                whiteSpace: "nowrap",
+              },
+            }}
+          >
+            {metrics.map((metric) => {
+              const MetricIcon = metric.icon;
+              const isSelected = selectedMetric === metric.id;
+              return (
+                <Button
+                  key={metric.id}
+                  onClick={() => setSelectedMetric(metric.id)}
+                  color={isSelected ? "primary" : "inherit"}
+                  sx={{
+                    bgcolor: isSelected
+                      ? "primary.main"
+                      : theme.palette.action.hover, // This replaces "#f8f9fa"
+                    color: isSelected
+                      ? "primary.contrastText" // This ensures text is readable on primary color
+                      : "text.primary", // This uses theme's text color
+                    "&:hover": {
+                      bgcolor: isSelected
+                        ? "primary.dark"
+                        : theme.palette.action.selected, // This replaces "#f0f0f0"
+                    },
+                    fontSize: isTablet ? "0.875rem" : "inherit",
+                  }}
+                  startIcon={<MetricIcon />}
+                >
+                  {metric.label}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
 
+          {/* Charts */}
+          <Stack spacing={2}>
+            <HistoricalChart
+              selectedPen={selectedPen}
+              selectedMetric={selectedMetric}
+              selectedMetricData={selectedMetricData}
+            />
+            <LiveChart
+              selectedPen={selectedPen}
+              selectedMetric={selectedMetric}
+              selectedMetricData={selectedMetricData}
+            />
+          </Stack>
+        </Paper>
+
+        {/* Right side: Context */}
         <Box
           sx={{
-            display: "flex",
-            gap: "24px",
-            flexDirection: { xs: "column", md: "row" },
+            width: isTablet ? "100%" : 280,
+            display: isTablet ? "flex" : "block",
+            gap: 2,
+            flexWrap: "wrap",
           }}
         >
-          <HistoricalChart
-            deviceId={selectedPen?.deviceId}
-            selectedMetric={selectedMetric}
-            selectedMetricData={selectedMetricData}
-            fetchSensorReadings={(params) =>
-              dispatch(fetchSensorReadings(params)).unwrap()
-            }
-          />
-
-          <LiveChart
+          <SensorContext
             selectedPen={selectedPen}
             selectedMetric={selectedMetric}
             selectedMetricData={selectedMetricData}
-            onLatestReadingsUpdate={setLatestReadings}
-            onAlertChange={setAlert}
+            fetchSensorReadings={fetchSensorReadings}
           />
         </Box>
-      </Collapse>
+      </Stack>
     </Box>
   );
 };
