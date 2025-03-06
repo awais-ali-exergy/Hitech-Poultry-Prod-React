@@ -136,9 +136,9 @@ const SensorMonitoringDashboard = ({ pens = [] }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {pens.map((pen) => (
+                {pens.map((pen, i) => (
                   <LiveSensorRow
-                    key={pen.deviceId}
+                    key={i}
                     pen={pen}
                     isSelected={selectedSensor?.id === pen.deviceId}
                     onClick={() => handleSensorSelect(pen)}
