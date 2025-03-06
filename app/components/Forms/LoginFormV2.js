@@ -14,7 +14,7 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import logo from "dan-images/logo.svg";
+import logo from "../../../public/logo.png";
 import useStyles from "./user-jss";
 import { useDispatch, useSelector } from "react-redux";
 import { Stack } from "@mui/material";
@@ -94,23 +94,19 @@ function LoginFormV2() {
         setAlert={setAlert}
         severity={alert.severity}
         message={alert.message}
-        autoHideDuration={3000}
       />
 
       <Paper className={cx(classes.sideWrap, deco && classes.petal)}>
-        <Stack justifyContent={"center"} sx={{ height: "100%", width: "100%" }}>
+        <Stack
+          justifyContent={"center"}
+          sx={{ height: "100%", width: "100%", textAlign: "center", px: 3 }}
+        >
           <div className={classes.topBar}>
             <NavLink to="/" className={classes.brand}>
               <img src={logo} alt="HI-TECH Poultry Feeds" />
-              HI-TECH Poultry Feeds
             </NavLink>
           </div>
-          <Typography
-            variant="h4"
-            sx={{ mt: 5 }}
-            className={classes.title}
-            gutterBottom
-          >
+          <Typography variant="h4" className={classes.title} gutterBottom>
             Sign In
           </Typography>
           <Typography
@@ -119,7 +115,7 @@ function LoginFormV2() {
             gutterBottom
             align="center"
           >
-            Welcome to HI-TECH Poultry Feeds Management System
+            Welcome to Hi-Tech Poultry breeders System
           </Typography>
           <section>
             <form onSubmit={formik.handleSubmit}>

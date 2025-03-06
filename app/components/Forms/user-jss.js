@@ -59,7 +59,7 @@ const useStyles = makeStyles()((theme, _params, classes) => ({
       width: 480,
     },
     [`& .${classes.topBar}`]: {
-      marginBottom: theme.spacing(4),
+      marginBottom: theme.spacing(1),
     },
   },
   fullWrap: {
@@ -110,7 +110,7 @@ const useStyles = makeStyles()((theme, _params, classes) => ({
       margin: theme.spacing(2),
     },
     "& img": {
-      width: 30,
+      width: 100,
       marginRight: 10,
     },
   },

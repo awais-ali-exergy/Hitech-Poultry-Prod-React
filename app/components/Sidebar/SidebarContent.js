@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import brand from "dan-api/dummy/brand";
 import dummy from "dan-api/dummy/dummyContents";
-import logo from "dan-images/logo.svg";
+import logo from "../../../public/logo.png";
 import MainMenu from "./MainMenu";
 import useStyles from "./sidebar-jss";
 import { useSelector } from "react-redux";
@@ -74,7 +74,7 @@ function SidebarContent(props) {
           )}
         >
           <img src={logo} alt={brand.name} />
-          {brand.name}
+          Hi-Tech Poultry
         </NavLink>
         {isLogin && (
           <div
