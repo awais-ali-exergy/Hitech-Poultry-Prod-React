@@ -23,7 +23,7 @@ import {
 } from "../../../../redux/modules/farmSlice";
 import FarmLayoutSVG from "./farmlayout/FarmLayout";
 
-const SensorMonitoringDashboard = ({ pens = [] }) => {
+const SensorMonitoringTable = ({ pens = [] }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const selectedSensor = useSelector(selectSelectedSensor);
@@ -153,4 +153,4 @@ const SensorMonitoringDashboard = ({ pens = [] }) => {
   );
 };
 
-export default SensorMonitoringDashboard;
+export default SensorMonitoringTable;

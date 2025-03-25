@@ -115,14 +115,12 @@ const SensorMonitoring = ({ selectedPen }) => {
                   sx={{
                     bgcolor: isSelected
                       ? "primary.main"
-                      : theme.palette.action.hover, // This replaces "#f8f9fa"
-                    color: isSelected
-                      ? "primary.contrastText" // This ensures text is readable on primary color
-                      : "text.primary", // This uses theme's text color
+                      : theme.palette.action.hover,
+                    color: isSelected ? "primary.contrastText" : "text.primary",
                     "&:hover": {
                       bgcolor: isSelected
                         ? "primary.dark"
-                        : theme.palette.action.selected, // This replaces "#f0f0f0"
+                        : theme.palette.action.selected,
                     },
                     fontSize: isTablet ? "0.875rem" : "inherit",
                   }}

@@ -28,7 +28,7 @@ import DashboardCharts from "./components/DashboardCharts";
 import ImageHighlight from "./components/ImageHighlighter";
 import PenPreviewTabs from "./components/PenPreviewTabs";
 import test from "../../../../public/test.jpg";
-import SensorMonitoringDashboard from "./components/SensorMonitoringDashboard";
+import SensorMonitoringTable from "./components/SensorMonitoringTable";
 import SensorMonitoring from "./components/SensorMonitoring";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -96,7 +96,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ p: 0, minHeight: "100vh" }}>
       <LocationHeader />
-      <SensorMonitoringDashboard pens={pens} />
+      <SensorMonitoringTable pens={pens} />
       <SensorMonitoring selectedPen={selectedSensor} />
 
       {/* <ImageHighlight /> */}
