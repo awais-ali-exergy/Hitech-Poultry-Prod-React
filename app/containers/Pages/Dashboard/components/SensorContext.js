@@ -20,7 +20,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLiveReadings } from "../../../../redux/modules/farmSlice";
 import dayjs from "dayjs";
 
-// Move this outside component to avoid recreating on each render
 const ENVIRONMENTAL_THRESHOLDS = {
   temperature: { min: 20, max: 25 },
   humidity: { min: 60, max: 80 },
@@ -129,7 +128,6 @@ const SensorContext = ({
   const [loading, setLoading] = useState(false);
   const [environmentalScore, setEnvironmentalScore] = useState(null);
 
-  // Effect to initialize events when pen changes
   useEffect(() => {
     if (selectedPen?.deviceId) {
       setRecentEvents([
@@ -143,7 +141,6 @@ const SensorContext = ({
     }
   }, [selectedPen?.deviceId, selectedPen?.penName]);
 
-  // Separate effect to fetch data - only runs when the pen changes
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -160,10 +157,8 @@ const SensorContext = ({
           })
         ).unwrap();
 
-        // Store the full data set
         setSensorData(response.data);
 
-        // Calculate environmental score once when we get new data
         const score = calculateEnvironmentalScore(
           response.data,
           ENVIRONMENTAL_THRESHOLDS
@@ -182,7 +177,6 @@ const SensorContext = ({
     return () => abortController.abort();
   }, [selectedPen?.deviceId, dispatch, fetchSensorReadings]);
 
-  // Calculate stats when metric changes or new data arrives
   useEffect(() => {
     if (!sensorData || sensorData.length === 0.0) return;
 
@@ -248,7 +242,6 @@ const SensorContext = ({
     });
   }, [sensorData, selectedMetric]);
 
-  // Monitor live readings and update events
   useEffect(() => {
     if (!liveReadings.history?.length) return;
 
@@ -292,7 +285,6 @@ const SensorContext = ({
     setRecentEvents((prevEvents) => [...events, ...prevEvents].slice(0, 4));
   }, [liveReadings.history, selectedMetric, selectedMetricData.max]);
 
-  // Memoize status color function to prevent unnecessary rerenders
   const getStatusColor = useCallback(
     (status) => {
       switch (status) {
@@ -308,8 +300,6 @@ const SensorContext = ({
     },
     [theme.palette]
   );
-
-  // Memoize card content renderer
   const renderCardContent = useCallback(
     (title, content) => (
       <>
