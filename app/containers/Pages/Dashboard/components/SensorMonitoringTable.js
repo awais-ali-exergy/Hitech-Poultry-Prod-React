@@ -34,7 +34,6 @@ const SensorMonitoringTable = ({ pens = [] }) => {
         id: pen.deviceId,
         penName: pen.penName,
         deviceId: pen.deviceId,
-        // Add any other sensor data you need
       })
     );
   };
@@ -69,7 +68,6 @@ const SensorMonitoringTable = ({ pens = [] }) => {
   return (
     <Box>
       <Grid container spacing={2}>
-        {/* Farm Layout Section */}
         <Grid item xs={12} md={5}>
           <Paper
             elevation={0}
@@ -93,7 +91,6 @@ const SensorMonitoringTable = ({ pens = [] }) => {
                 Visual representation of farm structure and sensor placement
               </Typography>
             </Box>
-            {/* Add your farm layout visualization here */}
             <FarmLayoutSVG
               selectedSensor={selectedSensor}
               onSensorClick={handleSensorSelect}
@@ -101,7 +98,6 @@ const SensorMonitoringTable = ({ pens = [] }) => {
           </Paper>
         </Grid>
 
-        {/* Sensors Table Section */}
         <Grid item xs={12} md={7}>
           <Paper
             elevation={0}
@@ -136,9 +132,9 @@ const SensorMonitoringTable = ({ pens = [] }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {pens.map((pen, i) => (
+                {pens.map((pen, index) => (
                   <LiveSensorRow
-                    key={i}
+                    key={`sensor-${pen.deviceId}-${index}`}
                     pen={pen}
                     isSelected={selectedSensor?.id === pen.deviceId}
                     onClick={() => handleSensorSelect(pen)}
